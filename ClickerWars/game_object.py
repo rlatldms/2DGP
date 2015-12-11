@@ -5,6 +5,15 @@ T = 1
 
 class OBJECT:
     location1 = None
+    location2 = None
+    location3 = None
+    location4 = None
+    location5 = None
+    location6 = None
+    location7 = None
+    location8 = None
+    location9 = None
+    location10 = None
 
     monsters1 = None
     monsters2 = None
@@ -21,6 +30,7 @@ class OBJECT:
     monsters_hp_unfilled = None
     monsters_hp_filled = None
 
+    before_map = None
     here_map = None
     next_map = None
     arrow = None
@@ -35,6 +45,16 @@ class OBJECT:
 
     def __init__(self):
         self.location1 = load_image('location/location_1.jpg')
+        self.location2 = load_image('location/location_2.jpg')
+        self.location3 = load_image('location/location_3.jpg')
+        self.location4 = load_image('location/location_4.jpg')
+        self.location5 = load_image('location/location_5.jpg')
+        self.location6 = load_image('location/location_6.jpg')
+        self.location7 = load_image('location/location_7.jpg')
+        self.location8 = load_image('location/location_8.jpg')
+        self.location9 = load_image('location/location_9.jpg')
+        self.location10 = load_image('location/location_10.jpg')
+
         self.monsters1 = load_image('monsters/monsters1.png')
         self.monsters2 = load_image('monsters/monsters3.png')
         self.monsters3 = load_image('monsters/monsters5.png')
@@ -50,6 +70,7 @@ class OBJECT:
         self.monsters_hp_unfilled = load_image('title&menu/main6.png')
         self.monsters_hp_filled = load_image('title&menu/main6.png')
 
+        self.before_map = load_image('title&menu/main6.png')
         self.here_map = load_image('title&menu/main6.png')
         self.next_map = load_image('title&menu/main6.png')
         self.arrow = load_image('title&menu/main6.png')
@@ -63,7 +84,7 @@ class OBJECT:
         self.stage = 1
 
         self.click = F
-        self.my_damage = 100
+        self.my_damage = 200
         self.monsters_hp = 0
         self.monsters_count = 1
         self.monsters_timeAttack = 20
@@ -77,33 +98,74 @@ class OBJECT:
 
     def draw(self):
         if self.stage == 1:
-            self.location1.draw(240, 400)
+            self.location1.clip_draw(0, 0, 480, 800, 240, 400)
             self.here_map.clip_draw(565, 510, 90, 75, 240, 700)
             self.next_map.clip_draw(940, 114, 90, 75, 330, 700)
         elif self.stage == 2:
-            pass
-
+            self.location2.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(565, 510, 90, 75, 150, 700)
+            self.here_map.clip_draw(940, 114, 90, 75, 240, 700)
+            self.next_map.clip_draw(847, 334, 85, 75, 330, 700)
+        elif self.stage == 3:
+            self.location3.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(940, 114, 90, 75, 155, 700)
+            self.here_map.clip_draw(847, 334, 85, 75, 240, 700)
+            self.next_map.clip_draw(760, 324, 90, 75, 330, 700)
+        elif self.stage == 4:
+            self.location4.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(847, 334, 85, 75, 150, 700)
+            self.here_map.clip_draw(760, 324, 90, 75, 240, 700)
+            self.next_map.clip_draw(470, 586, 93, 75, 325, 700)
+        elif self.stage == 5:
+            self.location5.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(760, 324, 90, 75, 155, 700)
+            self.here_map.clip_draw(470, 586, 93, 75, 240, 700)
+            self.next_map.clip_draw(672, 326, 85, 80, 330, 700)
+        elif self.stage == 6:
+            self.location6.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(470, 586, 93, 75, 155, 700)
+            self.here_map.clip_draw(672, 326, 85, 80, 240, 700)
+            self.next_map.clip_draw(380, 519, 85, 75, 330, 700)
+        elif self.stage == 7:
+            self.location7.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(672, 326, 85, 80, 155, 700)
+            self.here_map.clip_draw(380, 519, 85, 75, 240, 700)
+            self.next_map.clip_draw(671, 409, 85, 75, 330, 700)
+        elif self.stage == 8:
+            self.location8.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(380, 519, 85, 75, 150, 700)
+            self.here_map.clip_draw(671, 409, 85, 75, 240, 700)
+            self.next_map.clip_draw(380, 609, 85, 80, 330, 700)
+        elif self.stage == 9:
+            self.location9.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(671, 409, 85, 75, 155, 700)
+            self.here_map.clip_draw(380, 609, 85, 80, 240, 700)
+            self.next_map.clip_draw(565, 589, 90, 75, 330, 700)
+        elif self.stage == 10:
+            self.location10.clip_draw(0, 0, 480, 800, 240, 400)
+            self.before_map.clip_draw(380, 609, 85, 80, 155, 700)
+            self.here_map.clip_draw(565, 589, 90, 75, 240, 700)
         if self.monsters_count == 1:
             self.monsters1.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 2:
+        elif self.monsters_count == 2:
             self.monsters2.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 3:
+        elif self.monsters_count == 3:
             self.monsters3.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 4:
+        elif self.monsters_count == 4:
             self.monsters4.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 5:
+        elif self.monsters_count == 5:
             self.monsters5.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 6:
+        elif self.monsters_count == 6:
             self.monsters6.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 7:
+        elif self.monsters_count == 7:
             self.monsters7.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 8:
+        elif self.monsters_count == 8:
             self.monsters8.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 9:
+        elif self.monsters_count == 9:
             self.monsters9.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 10:
+        elif self.monsters_count == 10:
             self.monsters10.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
-        if self.monsters_count == 11:
+        elif self.monsters_count == 11:
             self.monsters_boss.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
 
         self.monsters_hp_unfilled.clip_draw(130, 784, 210, 20, 240, 250)
@@ -126,6 +188,11 @@ class OBJECT:
             self.frame_delay += 1
 
         if self.monsters_count == 11:
+            if self.monsters_hp >= 210:
+                self.stage += 1
+                self.monsters_hp = 0
+                self.monsters_count = 1
+                self.monsters_timeAttack = 20
             if self.monsters_timeAttack >= 0:
                 self.monsters_timeAttack -= 0.003
             else:
