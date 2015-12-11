@@ -1,9 +1,7 @@
 from pico2d import*
-
 import game_framework
 import game_main
 
-name = "TitleState"
 title = None
 title_time = 0.0
 
