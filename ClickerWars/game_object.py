@@ -1,7 +1,5 @@
 from pico2d import*
-
-F = 0
-T = 1
+import random
 
 class OBJECT:
     location1 = None
@@ -14,6 +12,7 @@ class OBJECT:
     location8 = None
     location9 = None
     location10 = None
+    end_game = None
 
     monsters1 = None
     monsters2 = None
@@ -54,6 +53,7 @@ class OBJECT:
         self.location8 = load_image('location/location_8.jpg')
         self.location9 = load_image('location/location_9.jpg')
         self.location10 = load_image('location/location_10.jpg')
+        self.end_game = load_image('title&menu/end.png')
 
         self.monsters1 = load_image('monsters/monsters1.png')
         self.monsters2 = load_image('monsters/monsters3.png')
@@ -83,8 +83,8 @@ class OBJECT:
 
         self.stage = 1
 
-        self.click = F
-        self.my_damage = 200
+        self.click = False
+        self.my_damage = 10
         self.monsters_hp = 0
         self.monsters_count = 1
         self.monsters_timeAttack = 20
@@ -92,11 +92,34 @@ class OBJECT:
         self.eat_coin = 0
         self.skill_upgrade = 100
 
+        self.score = 0
+
         self.frame = 1
         self.frame_delay = 0
         self.state = self.MONSTERS_STAND
 
-    def draw(self):
+        self.coinX = random.randint(100, 300)
+        self.drop_coin = [[0 for i in range(11)] for j in range(11)]
+
+        for i in range(11):
+            for j in range(11):
+                self.drop_coin[i][j] = False
+
+    #    self.sound_stage = load_music('sound&font/new_level.mp3')
+    #    self.sound_monster = load_music('sound&font/monster_die_01.mp3')
+    #    self.sound_click = load_music('sound&font/hit_monster_2.mp3')
+    #    self.sound_upgrage = load_music('sound&font/upgrade_hero.mp3')
+    #    self.sound_dropCoin = load_music('sound&font/Coin_down.mp3')
+    #    self.sound_eatCoin = load_music('sound&font/take_coin.mp3')
+
+    #    self.sound_stage.set_volume(32)
+    #    self.sound_monster.set_volume(32)
+    #    self.sound_click.set_volume(32)
+    #    self.sound_upgrage.set_volume(32)
+    #    self.sound_dropCoin.set_volume(32)
+    #    self.sound_eatCoin.set_volume(32)
+
+    def location(self):
         if self.stage == 1:
             self.location1.clip_draw(0, 0, 480, 800, 240, 400)
             self.here_map.clip_draw(565, 510, 90, 75, 240, 700)
@@ -145,6 +168,8 @@ class OBJECT:
             self.location10.clip_draw(0, 0, 480, 800, 240, 400)
             self.before_map.clip_draw(380, 609, 85, 80, 155, 700)
             self.here_map.clip_draw(565, 589, 90, 75, 240, 700)
+
+    def monsters(self):
         if self.monsters_count == 1:
             self.monsters1.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
         elif self.monsters_count == 2:
@@ -168,6 +193,10 @@ class OBJECT:
         elif self.monsters_count == 11:
             self.monsters_boss.clip_draw(330 * self.frame, 1024 - 340 * self.state, 300, 300, 240, 440)
 
+    def coins(self):
+        self.coin.clip_draw(342, 759, 40, 35, self.coinX, 320)
+
+    def draw(self):
         self.monsters_hp_unfilled.clip_draw(130, 784, 210, 20, 240, 250)
         self.monsters_hp_filled.clip_draw(130, 809, 210 - self.monsters_hp, 20, 240 - self.monsters_hp / 2, 250)
 
@@ -177,6 +206,43 @@ class OBJECT:
         self.coin_state.clip_draw(0, 474, 340, 60, 240, 775)
         self.coin.clip_draw(342, 759, 40, 35, 140, 770)
         self.coin.clip_draw(342, 759, 40, 35, 120, 770)
+
+    def draw_data(self):
+        if self.stage < 11:
+            self.font.draw(390, 90, "%2d" %self.my_damage)
+            self.font.draw(260, 766, "%2d" %self.eat_coin)
+            self.font.draw(180, 640, "stage : %2d / 10" %self.stage)
+            self.font.draw(20, 50, "upgrade click damage : %2d" %self.skill_upgrade)
+            if self.monsters_count < 11:
+                self.font.draw(100, 500, "%2d / 10" %self.monsters_count)
+            elif self.monsters_count == 11:
+                self.font.draw(80, 500, "BOSS : %2d" %self.monsters_timeAttack)
+
+        if self.stage == 11:
+            self.end_game.clip_draw(0, 0, 480, 800, 240, 400)
+            self.font.draw(215, 430, "SCORE : %2d" %self.score)
+
+    def handle_stand(self):
+        if self.monsters_hp >= 210:
+            #self.sound_dropCoin.play()
+            #self.sound_monster.play()
+            self.frame = 0
+            self.monsters_hp = 0
+            self.monsters_count += 1
+            self.drop_coin[self.stage - 1][self.monsters_count - 1] = True
+        elif self.click == True:
+            self.monsters_hp += (self.my_damage - 7 * (self.stage - 1))
+            self.state = self.MONSTERS_ATTACK
+
+    def handle_attack(self):
+        self.frame = 1
+        if self.click == False:
+            self.state = self.MONSTERS_STAND
+
+    handle_state = {
+        MONSTERS_STAND : handle_stand,
+        MONSTERS_ATTACK : handle_attack
+    }
 
     def update(self):
         if self.state == self.MONSTERS_STAND:
@@ -189,6 +255,7 @@ class OBJECT:
 
         if self.monsters_count == 11:
             if self.monsters_hp >= 210:
+                #self.sound_stage.play()
                 self.stage += 1
                 self.monsters_hp = 0
                 self.monsters_count = 1
@@ -199,33 +266,6 @@ class OBJECT:
                 self.monsters_hp = 0
                 self.monsters_count = 1
                 self.monsters_timeAttack = 20
-
+        if self.stage != 11:
+            self.score += 0.003
         self.handle_state[self.state](self)
-
-    def handle_stand(self):
-        if self.monsters_hp >= 210:
-            self.frame = 0
-            self.monsters_hp = 0
-            self.monsters_count += 1
-        elif self.click == T:
-            self.monsters_hp += self.my_damage
-            self.state = self.MONSTERS_ATTACK
-
-    def handle_attack(self):
-        self.frame = 1
-        if self.click == F:
-            self.state = self.MONSTERS_STAND
-
-    handle_state = {
-        MONSTERS_STAND : handle_stand,
-        MONSTERS_ATTACK : handle_attack
-    }
-
-    def data(self):
-        self.font.draw(390, 90, "%2d" %self.my_damage)
-        self.font.draw(260, 766, "%2d" %self.eat_coin)
-        self.font.draw(20, 20, "upgrade click damage : %2d" %self.skill_upgrade)
-        if self.monsters_count < 11:
-            self.font.draw(50, 710, "%2d / 10" %self.monsters_count)
-        elif self.monsters_count == 11:
-            self.font.draw(30, 630, "BOSS : %2d" %self.monsters_timeAttack)

@@ -19,8 +19,8 @@ def update():
     if (title_time > 1.0):
         title_time = 0
         game_framework.change_state(game_main)
-    delay(0.01)
-    title_time += 0.01
+    delay(0.1)
+    title_time += 0.1
 
 def draw():
     global title
