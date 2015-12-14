@@ -39,10 +39,10 @@ def handle_events():
 
         if (event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
             object.click = True
-            #object.sound_click.play()
+            object.sound_click.play()
             if object.drop_coin[object.stage - 1][object.monsters_count - 1] == True:
                 if (object.coinX - 18 < event.x and event.x < object.coinX + 15) and (465 < event.y and event.y < 495):
-                    #object.sound_eatCoin.play()
+                    object.sound_eatCoin.play()
                     object.eat_coin += 100
                     object.drop_coin[object.stage - 1][object.monsters_count - 1] = False
 
@@ -51,7 +51,7 @@ def handle_events():
 
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_a and object.eat_coin >= object.skill_upgrade:
-                #object.sound_upgrage.play()
+                object.sound_upgrage.play()
                 object.my_damage += 5
                 object.eat_coin -= object.skill_upgrade
                 object.skill_upgrade += 100 * object.stage

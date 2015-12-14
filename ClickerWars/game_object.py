@@ -105,19 +105,19 @@ class OBJECT:
             for j in range(11):
                 self.drop_coin[i][j] = False
 
-    #    self.sound_stage = load_music('sound&font/new_level.mp3')
-    #    self.sound_monster = load_music('sound&font/monster_die_01.mp3')
-    #    self.sound_click = load_music('sound&font/hit_monster_2.mp3')
-    #    self.sound_upgrage = load_music('sound&font/upgrade_hero.mp3')
-    #    self.sound_dropCoin = load_music('sound&font/Coin_down.mp3')
-    #    self.sound_eatCoin = load_music('sound&font/take_coin.mp3')
+        self.sound_stage = load_music('sound&font/new_level.mp3')
+        self.sound_monster = load_music('sound&font/monster_die_01.mp3')
+        self.sound_click = load_music('sound&font/hit_monster_2.mp3')
+        self.sound_upgrage = load_music('sound&font/upgrade_hero.mp3')
+        self.sound_dropCoin = load_music('sound&font/Coin_down.mp3')
+        self.sound_eatCoin = load_music('sound&font/take_coin.mp3')
 
-    #    self.sound_stage.set_volume(32)
-    #    self.sound_monster.set_volume(32)
-    #    self.sound_click.set_volume(32)
-    #    self.sound_upgrage.set_volume(32)
-    #    self.sound_dropCoin.set_volume(32)
-    #    self.sound_eatCoin.set_volume(32)
+        self.sound_stage.set_volume(32)
+        self.sound_monster.set_volume(32)
+        self.sound_click.set_volume(32)
+        self.sound_upgrage.set_volume(32)
+        self.sound_dropCoin.set_volume(32)
+        self.sound_eatCoin.set_volume(32)
 
     def location(self):
         if self.stage == 1:
@@ -225,7 +225,7 @@ class OBJECT:
     def handle_stand(self):
         if self.monsters_hp >= 210:
             #self.sound_dropCoin.play()
-            #self.sound_monster.play()
+            self.sound_monster.play()
             self.frame = 0
             self.monsters_hp = 0
             self.monsters_count += 1
@@ -255,7 +255,7 @@ class OBJECT:
 
         if self.monsters_count == 11:
             if self.monsters_hp >= 210:
-                #self.sound_stage.play()
+                self.sound_stage.play()
                 self.stage += 1
                 self.monsters_hp = 0
                 self.monsters_count = 1
